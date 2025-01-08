@@ -30,4 +30,27 @@ public class DocumentResource {
                 .created(new URI("/documents" + result.getId()))
                 .body(result);
     }
+
+    @GetMapping("/documents")
+    public ResponseEntity<List<Document>> getAllDocuments() {
+        log.debug("REST request to get all Documents");
+        return ResponseEntity
+                .ok()
+                .body(documentService.findAll());
+    }
+
+    @GetMapping("/documents/{id}")
+    public ResponseEntity<Document> getDocumentById(@PathVariable Long id) {
+        log.debug("REST request to get Document : {}", id);
+        return ResponseEntity
+                .ok()
+                .body(documentService.findById(id));
+    }
+
+    @DeleteMapping("/documents/{id}")
+    public ResponseEntity<Void> deleteDocument(@PathVariable Long id) {
+        log.debug("REST request to delete Document : {}", id);
+        documentService.deleteById(id);
+        return ResponseEntity.noContent().build();
+    }
 }

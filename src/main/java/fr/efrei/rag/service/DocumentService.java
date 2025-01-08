@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class DocumentService {
     private static final Logger log = LoggerFactory.getLogger(DocumentService.class);
@@ -19,4 +21,20 @@ public class DocumentService {
         log.debug("Request to buildAndSave Document: {}", document);
         return documentRepository.save(document);
     }
+
+    public List<Document> findAll() {
+        log.debug("Request to find all Documents");
+        return documentRepository.findAll();
+    }
+
+    public Document findById(Long id) {
+        log.debug("Request to find Document by ID: {}", id);
+        return documentRepository.findById(id).orElse(null);
+    }
+
+    public void deleteById(Long id) {
+        log.debug("Request to delete Document by ID: {}", id);
+        documentRepository.deleteById(id);
+    }
+
 }
