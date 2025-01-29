@@ -1,6 +1,6 @@
 package fr.efrei.rag.web.rest;
 
-import fr.efrei.rag.web.dto.Sample;
+//import fr.efrei.rag.web.dto.Sample;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
