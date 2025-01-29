@@ -1,6 +1,7 @@
 package fr.efrei.rag.web.rest;
 
 import fr.efrei.rag.domain.Document;
+import fr.efrei.rag.repository.dto.DocumentDTO;
 import fr.efrei.rag.service.DocumentService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +16,7 @@ import java.util.List;
 public class DocumentResource {
 
     private final Logger log = LoggerFactory.getLogger(DocumentResource.class);
+
     private final DocumentService documentService;
 
     public DocumentResource(DocumentService documentService) {
@@ -27,30 +29,32 @@ public class DocumentResource {
         Document result = documentService.buildAndSave(document);
 
         return ResponseEntity
-                .created(new URI("/documents" + result.getId()))
+                .created(new URI("/documents/" + result.getId()))
                 .body(result);
     }
 
     @GetMapping("/documents")
     public ResponseEntity<List<Document>> getAllDocuments() {
         log.debug("REST request to get all Documents");
-        return ResponseEntity
-                .ok()
-                .body(documentService.findAll());
+        List<Document> documents = documentService.findAll();
+
+        return ResponseEntity.ok(documents);
+    }
+
+    @GetMapping("/documents/dto")
+    public ResponseEntity<List<DocumentDTO>> getAllDocumentsDTO() {
+        log.debug("REST request to get all Documents DTO");
+        List<DocumentDTO> documents = documentService.findAllDTO();
+
+        return ResponseEntity.ok(documents);
     }
 
     @GetMapping("/documents/{id}")
-    public ResponseEntity<Document> getDocumentById(@PathVariable Long id) {
+    public ResponseEntity<Document> getDocument(@PathVariable Long id) {
         log.debug("REST request to get Document : {}", id);
-        return ResponseEntity
-                .ok()
-                .body(documentService.findById(id));
+        Document document = documentService.findById(id).orElse(null);
+
+        return ResponseEntity.ok(document);
     }
 
-    @DeleteMapping("/documents/{id}")
-    public ResponseEntity<Void> deleteDocument(@PathVariable Long id) {
-        log.debug("REST request to delete Document : {}", id);
-        documentService.deleteById(id);
-        return ResponseEntity.noContent().build();
-    }
 }

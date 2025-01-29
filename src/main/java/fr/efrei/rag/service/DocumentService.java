@@ -2,15 +2,19 @@ package fr.efrei.rag.service;
 
 import fr.efrei.rag.domain.Document;
 import fr.efrei.rag.repository.DocumentRepository;
+import fr.efrei.rag.repository.dto.DocumentDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DocumentService {
-    private static final Logger log = LoggerFactory.getLogger(DocumentService.class);
+
+    private final Logger log = LoggerFactory.getLogger(DocumentService.class);
+
     private final DocumentRepository documentRepository;
 
     public DocumentService(DocumentRepository documentRepository) {
@@ -18,7 +22,7 @@ public class DocumentService {
     }
 
     public Document buildAndSave(Document document) {
-        log.debug("Request to buildAndSave Document: {}", document);
+        log.debug("Request to save Document : {}", document);
         return documentRepository.save(document);
     }
 
@@ -27,14 +31,14 @@ public class DocumentService {
         return documentRepository.findAll();
     }
 
-    public Document findById(Long id) {
-        log.debug("Request to find Document by ID: {}", id);
-        return documentRepository.findById(id).orElse(null);
+    public List<DocumentDTO> findAllDTO() {
+        log.debug("Request to find all Documents DTO");
+        return documentRepository.findAllDocumentsDTO();
     }
 
-    public void deleteById(Long id) {
-        log.debug("Request to delete Document by ID: {}", id);
-        documentRepository.deleteById(id);
+    public Optional<Document> findById(Long id) {
+        log.debug("Request to get Document : {}", id);
+        return documentRepository.findById(id);
     }
 
 }
